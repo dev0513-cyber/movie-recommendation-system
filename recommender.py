@@ -1,6 +1,8 @@
 import pandas as pd
 import ast
 
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 
 def load_data():
     movies = pd.read_csv("data/tmdb_5000_movies.csv")
@@ -60,6 +62,31 @@ def create_tags(df):
     df["tags"] = df["tags"].apply(lambda x: " ".join(x).lower())
     return df
 
+def vectorize(df):
+    cv = CountVectorizer(max_features=5000, stop_words="english")
+    vectors = cv.fit_transform(df["tags"]).toarray()
+    return vectors
+
+def compute_similarity(vectors):
+    similarity = cosine_similarity(vectors)
+    return similarity
+
+def recommend(movie_title, df, similarity):
+    movie_index = df[df["title"] == movie_title].index[0]
+
+    distances = similarity[movie_index]
+    movie_list = sorted(
+        list(enumerate(distances)),
+        reverse=True,
+        key=lambda x: x[1]
+    )[1:6]
+
+    recommendations = []
+    for i in movie_list:
+        recommendations.append(df.iloc[i[0]]["title"])
+
+    return recommendations
+
 if __name__ == "__main__":
     movies, credits = load_data()
     df = merge_data(movies, credits)
@@ -67,4 +94,8 @@ if __name__ == "__main__":
     df = preprocess_features(df)
     df = create_tags(df)
 
-    print(df[["title", "tags"]].head(1))
+    vectors = vectorize(df)
+    similarity = compute_similarity(vectors)
+
+    print(recommend("Avatar", df, similarity))
+
