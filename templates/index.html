@@ -1,16 +1,64 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Movie Recommendation System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Movie Recommendation System</h1>
 
-    <form>
-        <label>Enter Movie Name:</label>
-        <input type="text" name="movie">
-        <button type="submit">Recommend</button>
+<header>
+    <h1>Movie Recommendation System</h1>
+    <p>Content-Based Recommender using Machine Learning</p>
+</header>
+
+<div class="container">
+
+    <form method="POST">
+        <div class="select-wrapper">
+            <select name="movie" required>
+                <option value="" disabled selected>Select a movie</option>
+                {% for movie in movie_list %}
+                    <option value="{{ movie }}">{{ movie }}</option>
+                {% endfor %}
+            </select>
+            <span class="arrow">▾</span>
+        </div>
+        <button type="submit">Recommend 🎬</button>
     </form>
+    
+    <div id="loader" class="loader hidden"></div>    
+
+    {% if recommendations %}
+    <div class="recommendations">
+        {% for title, poster, score in recommendations %}
+        <div class="movie-card">
+            {% if poster %}
+                <img src="{{ poster }}" alt="{{ title }}">
+            {% else %}
+                <img src="https://via.placeholder.com/300x450?text=No+Poster">
+            {% endif %}
+            <div class="movie-info">
+                <h3>{{ title }}</h3>
+                <span class="score">Similarity: {{ score }}</span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    {% endif %}
+
+</div>
+
+<footer>
+    © 2026 Dev Parmar | ML Movie Recommendation System
+</footer>
 
 </body>
+<script>
+    function showLoader() {
+        document.getElementById("loader").classList.remove("hidden");
+    }
+</script>
+    
 </html>

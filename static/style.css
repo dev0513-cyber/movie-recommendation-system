@@ -1,0 +1,205 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: radial-gradient(circle at top, #1f1c2c, #0f0c1d);
+    color: #ffffff;
+    min-height: 100vh;
+}
+
+/* ---------- HEADER ---------- */
+header {
+    padding: 40px 20px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 2.8rem;
+    font-weight: 600;
+    background: linear-gradient(90deg, #a18cd1, #fbc2eb);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+header p {
+    margin-top: 10px;
+    color: #cfcfe6;
+    font-size: 1rem;
+}
+
+/* ---------- MAIN CONTAINER ---------- */
+.container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* ---------- FORM ---------- */
+form {
+    display: flex;
+    justify-content: center;
+    margin: 30px 0;
+    gap: 15px;
+}
+
+select {
+    width: 300px;
+    padding: 12px 15px;
+    border-radius: 12px;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+}
+
+button {
+    padding: 12px 25px;
+    border-radius: 12px;
+    border: none;
+    font-size: 1rem;
+    background: linear-gradient(135deg, #8e2de2, #4a00e0);
+    color: white;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(142,45,226,0.4);
+}
+/* Custom dropdown wrapper */
+.select-wrapper {
+    position: relative;
+    width: 320px;
+}
+
+.select-wrapper select {
+    width: 100%;
+    padding: 14px 45px 14px 18px;
+    border-radius: 14px;
+    border: none;
+    font-size: 1rem;
+    appearance: none;
+    background: linear-gradient(145deg, #1c1840, #13102a);
+    color: #ffffff;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+}
+
+/* Dropdown arrow */
+.select-wrapper .arrow {
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    font-size: 1.2rem;
+    color: #cfcfff;
+}
+
+/* Hover + focus */
+.select-wrapper select:hover {
+    box-shadow: 0 12px 30px rgba(142,45,226,0.5);
+}
+
+.select-wrapper select:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #8e2de2;
+}
+
+/* Option styling */
+select option {
+    background-color: #120f26;
+    color: #ffffff;
+}
+
+
+/* ---------- GRID ---------- */
+.recommendations {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 25px;
+    margin-top: 40px;
+}
+
+/* ---------- MOVIE CARD ---------- */
+.movie-card {
+    background: linear-gradient(180deg, #1b1836, #120f26);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+    transition: transform 0.3s ease;
+}
+
+.movie-card:hover {
+    transform: scale(1.05);
+}
+
+.movie-card img {
+    width: 100%;
+    height: 270px;
+    object-fit: cover;
+}
+
+.movie-info {
+    padding: 12px;
+    text-align: center;
+}
+
+.movie-info h3 {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #f3f3ff;
+}
+
+/* ---------- FOOTER ---------- */
+footer {
+    margin-top: 60px;
+    text-align: center;
+    padding: 20px;
+    color: #9a9abf;
+    font-size: 0.85rem;
+}
+/* Search input */
+input[type="text"] {
+    width: 320px;
+    padding: 12px 15px;
+    border-radius: 12px;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+}
+
+/* Loader */
+.loader {
+    margin: 40px auto;
+    width: 60px;
+    height: 60px;
+    border: 6px solid rgba(255,255,255,0.2);
+    border-top: 6px solid #8e2de2;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.hidden {
+    display: none;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+.score {
+    display: inline-block;
+    margin-top: 6px;
+    font-size: 0.85rem;
+    color: #c9c9ff;
+    background: rgba(255,255,255,0.08);
+    padding: 4px 10px;
+    border-radius: 8px;
+}

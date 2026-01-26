@@ -1,8 +1,29 @@
-import pandas as pd
+import pandas as pd  
 import ast
+import requests
+from sklearn.feature_extraction.text import CountVectorizer  
+from sklearn.metrics.pairwise import cosine_similarity  
+from fuzzywuzzy import process
+TMDB_API_KEY = "e34aab34678515db586350f332d0c747"
 
-from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
+def fetch_poster(movie_title):
+    """Returns the full poster URL for a movie title"""
+    try:
+        # Search for movie by title
+        url = f"https://api.themoviedb.org/3/search/movie?api_key={TMDB_API_KEY}&query={movie_title}"
+        response = requests.get(url)
+        data = response.json()
+        if data['results']:
+            poster_path = data['results'][0]['poster_path']
+            full_path = "https://image.tmdb.org/t/p/w500" + poster_path
+            return full_path
+        else:
+            return ""
+    except:
+        return ""
+def get_closest_match(movie_name, movie_list):
+    match, score = process.extractOne(movie_name, movie_list)
+    return match
 
 def load_data():
     movies = pd.read_csv("data/tmdb_5000_movies.csv")
@@ -73,19 +94,17 @@ def compute_similarity(vectors):
 
 def recommend(movie_title, df, similarity):
     movie_index = df[df["title"] == movie_title].index[0]
-
     distances = similarity[movie_index]
-    movie_list = sorted(
-        list(enumerate(distances)),
-        reverse=True,
-        key=lambda x: x[1]
-    )[1:6]
+    movie_list = sorted(list(enumerate(distances)), reverse=True, key=lambda x: x[1])[1:6]
 
     recommendations = []
-    for i in movie_list:
-        recommendations.append(df.iloc[i[0]]["title"])
-
+    for idx, score in movie_list:
+        title = df.iloc[idx]["title"]
+        poster = fetch_poster(title)
+        recommendations.append((title, poster, f"{round(score*100, 2)} %"))
+    
     return recommendations
+
 
 if __name__ == "__main__":
     movies, credits = load_data()
